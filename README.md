@@ -25,7 +25,7 @@ CyberShield is a lightweight, responsive, full-stack web application designed wi
 To run this application locally on your machine, follow these steps:
 
 1. **Clone the repository**
-   ```bash git clone [https://github.com/RiddhimanCode/password-estimator.git](https://github.com/RiddhimanCode/password-estimator.git
+git clone [https://github.com/RiddhimanCode/password-estimator.git](https://github.com/RiddhimanCode/password-estimator.git
  
 2. **Navigate into project directory**
 cd password-estimator
