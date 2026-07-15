@@ -1,0 +1,626 @@
+/* Cyberpunk / Hacker Terminal HUD Stylesheet */
+
+:root {
+  --neon-color: #00ff00;
+  --neon-glow: rgba(0, 255, 0, 0.5);
+  
+  --neon-green: #00ff00;
+  --neon-amber: #ffaa00;
+  --neon-red: #ff0055;
+  --dark-bg: #000000;
+  
+  --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+body.state-weak {
+  --neon-color: #ffaa00;
+  --neon-glow: rgba(255, 170, 0, 0.5);
+}
+
+body.state-rejected {
+  --neon-color: #ff0055;
+  --neon-glow: rgba(255, 0, 85, 0.5);
+}
+
+body.state-strong {
+  --neon-color: #00ff00;
+  --neon-glow: rgba(0, 255, 0, 0.85);
+}
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--dark-bg);
+  background-image: 
+    linear-gradient(rgba(0, 255, 0, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 0, 0.015) 1px, transparent 1px);
+  background-size: 25px 25px;
+  font-family: var(--font-mono);
+  color: var(--neon-color);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-shadow: 0 0 2px var(--neon-color);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* CRT Effects */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0,0,0,0) 55%, rgba(0,0,0,0.75) 100%);
+  pointer-events: none;
+  z-index: 100;
+}
+
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.3) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 99;
+  opacity: 0.85;
+}
+
+/* HUD Container Layout */
+.hud-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 15px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Header */
+.hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--neon-color);
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  transition: border-color 0.3s ease;
+}
+
+.header-left, .header-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.system-title {
+  font-weight: 700;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--neon-green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--neon-green);
+  animation: pulse 1.5s infinite;
+}
+
+.system-stat {
+  border: 1px solid var(--neon-color);
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  background: rgba(0, 255, 0, 0.05);
+  transition: border-color 0.3s ease;
+}
+
+.green-text {
+  color: var(--neon-green);
+  text-shadow: 0 0 3px var(--neon-green);
+}
+
+/* Main */
+.hud-main {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 15px;
+  flex-grow: 1;
+  min-height: 0; /* allows grid children to shrink and scroll */
+}
+
+@media (max-width: 900px) {
+  .hud-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+}
+
+.panel-left, .panel-right {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.margin-top {
+  margin-top: 15px;
+  flex-grow: 1;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+/* Angular Cyberpunk Border Glow effect */
+.terminal-wrapper {
+  background: var(--neon-color);
+  padding: 1.5px;
+  clip-path: polygon(
+    0 0, 
+    calc(100% - 15px) 0, 
+    100% 15px, 
+    100% 100%, 
+    15px 100%, 
+    0 calc(100% - 15px)
+  );
+  filter: drop-shadow(0 0 6px var(--neon-glow));
+  transition: background 0.3s ease, filter 0.3s ease;
+}
+
+.terminal-container {
+  background: #030303;
+  padding: 20px;
+  height: 100%;
+  clip-path: polygon(
+    0 0, 
+    calc(100% - 15px) 0, 
+    100% 15px, 
+    100% 100%, 
+    15px 100%, 
+    0 calc(100% - 15px)
+  );
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Panel Header Decoration */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--neon-color);
+  padding-bottom: 6px;
+  margin-bottom: 15px;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  transition: border-color 0.3s ease;
+}
+
+.panel-decor {
+  width: 40px;
+  height: 6px;
+  background-color: var(--neon-color);
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
+  transition: background-color 0.3s ease;
+}
+
+/* Console Content */
+.console-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.console-welcome {
+  color: var(--neon-color);
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+.console-meta {
+  color: var(--neon-color);
+  opacity: 0.7;
+  font-size: 0.75rem;
+}
+
+.input-prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.prompt-arrow {
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+}
+
+.input-field-container {
+  display: flex;
+  gap: 10px;
+  border: 1px solid var(--neon-color);
+  background: rgba(0, 255, 0, 0.02);
+  padding: 8px 12px;
+  align-items: center;
+  transition: border-color 0.3s ease;
+}
+
+#password-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-mono);
+  color: var(--neon-color);
+  font-size: 1.1rem;
+  flex-grow: 1;
+  letter-spacing: 2px;
+  text-shadow: 0 0 3px var(--neon-color);
+  transition: color 0.3s ease;
+}
+
+#password-input::placeholder {
+  color: var(--neon-color);
+  opacity: 0.3;
+}
+
+/* HUD Buttons */
+.hud-btn {
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid var(--neon-color);
+  color: var(--neon-color);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 4px 10px;
+  cursor: pointer;
+  outline: none;
+  text-shadow: 0 0 2px var(--neon-color);
+  transition: all 0.2s ease;
+}
+
+.hud-btn:hover {
+  background: var(--neon-color);
+  color: #000;
+  box-shadow: 0 0 8px var(--neon-color);
+  text-shadow: none;
+}
+
+/* Console logs area */
+.font-small {
+  font-size: 0.8rem;
+}
+
+.logs-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 5px;
+}
+
+.logs-container::-webkit-scrollbar {
+  width: 4px;
+}
+.logs-container::-webkit-scrollbar-thumb {
+  background-color: var(--neon-color);
+}
+
+.log-line {
+  line-height: 1.3;
+  word-break: break-all;
+}
+
+.log-line.system-log {
+  color: var(--neon-color);
+  opacity: 0.8;
+}
+
+.log-line.warn-log {
+  color: var(--neon-amber);
+  text-shadow: 0 0 2px var(--neon-amber);
+}
+
+.log-line.err-log {
+  color: var(--neon-red);
+  text-shadow: 0 0 2px var(--neon-red);
+}
+
+.log-line.ok-log {
+  color: var(--neon-green);
+  text-shadow: 0 0 2px var(--neon-green);
+}
+
+/* Right Diagnostics HUD Panel */
+.diag-section {
+  margin-bottom: 20px;
+}
+
+.diag-label {
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  border-left: 3px solid var(--neon-color);
+  padding-left: 8px;
+  margin-bottom: 12px;
+  font-weight: bold;
+  transition: border-color 0.3s ease;
+}
+
+.strength-gauge-container {
+  border: 1px solid var(--neon-color);
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: border-color 0.3s ease;
+}
+
+.strength-text {
+  font-weight: bold;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  animation: flicker 2s infinite alternate;
+}
+
+.bars-wrapper {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.bar-segment {
+  height: 16px;
+  flex-grow: 1;
+  border: 1px solid var(--neon-color);
+  background: transparent;
+  transition: background 0.2s ease, border-color 0.3s ease;
+}
+
+/* Custom class updates for the active bars */
+body.state-weak .bar-segment.active {
+  background: var(--neon-amber);
+  box-shadow: 0 0 8px var(--neon-amber);
+}
+body.state-rejected .bar-segment.active {
+  background: var(--neon-red);
+  box-shadow: 0 0 8px var(--neon-red);
+}
+body.state-strong .bar-segment.active,
+body:not(.state-weak):not(.state-rejected) .bar-segment.active {
+  background: var(--neon-green);
+  box-shadow: 0 0 8px var(--neon-green);
+}
+
+.score-numerical {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+/* Audit Checklist */
+.audit-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.audit-item {
+  display: flex;
+  gap: 12px;
+  font-size: 0.85rem;
+  padding: 4px 0;
+  transition: color 0.2s ease;
+}
+
+.audit-item.status-fail {
+  color: var(--neon-amber);
+  opacity: 0.6;
+}
+
+.audit-item.status-ok {
+  color: var(--neon-green);
+  font-weight: 500;
+  text-shadow: 0 0 3px var(--neon-green);
+}
+
+.audit-item.status-fail .item-icon {
+  color: var(--neon-amber);
+}
+
+.audit-item.status-ok .item-icon {
+  color: var(--neon-green);
+}
+
+/* Footer Segment */
+.hud-footer {
+  margin-top: 15px;
+  border-top: 1px solid var(--neon-color);
+  padding-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  transition: border-color 0.3s ease;
+}
+
+.footer-segment {
+  display: flex;
+  align-items: center;
+}
+
+.text-center {
+  justify-content: center;
+}
+
+/* Matrix Decorative Grid */
+.decor-matrix {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  opacity: 0.15;
+  margin-top: auto;
+  border-top: 1px dashed var(--neon-color);
+  padding-top: 10px;
+  user-select: none;
+  pointer-events: none;
+  transition: border-color 0.3s ease;
+}
+
+.matrix-column {
+  animation: scrollMatrix 4s infinite linear;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.4; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { text-shadow: 0 0 4px var(--neon-color), 0 0 10px var(--neon-color); }
+  20%, 24%, 55% { text-shadow: none; }
+}
+
+@keyframes scrollMatrix {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); opacity: 0.3; }
+  100% { transform: translateY(0); }
+}
+
+.blink-fast {
+  animation: blinkFast 0.5s infinite alternate;
+}
+
+@keyframes blinkFast {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Fullscreen Leak Alarm Overlay */
+.leak-alarm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(20, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.leak-alarm-overlay.hidden {
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.alarm-banner {
+  border: 4px solid var(--neon-red);
+  background: #0a0000;
+  padding: 40px;
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0 0 30px var(--neon-red), inset 0 0 20px rgba(255, 0, 85, 0.4);
+  font-family: var(--font-mono);
+  color: var(--neon-red);
+  position: relative;
+  animation: screenShake 0.15s infinite;
+}
+
+.alarm-glitch {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  letter-spacing: 4px;
+  position: relative;
+  text-shadow: 0 0 5px var(--neon-red);
+  animation: glitch 1s infinite;
+}
+
+.alarm-ascii {
+  font-size: 0.65rem;
+  white-space: pre;
+  display: inline-block;
+  text-align: left;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: var(--neon-red);
+  text-shadow: 0 0 4px var(--neon-red);
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.alarm-details {
+  border-top: 1px dashed var(--neon-red);
+  border-bottom: 1px dashed var(--neon-red);
+  padding: 15px 0;
+  margin-bottom: 25px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.alarm-footer {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  letter-spacing: 2px;
+  animation: blinkFast 0.8s infinite alternate;
+}
+
+/* Glitch and Screen Shake animations */
+@keyframes screenShake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(1px, -1px); }
+  50% { transform: translate(-1px, 1px); }
+  75% { transform: translate(1px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes glitch {
+  0% { text-shadow: 2px 2px var(--neon-red); }
+  50% { text-shadow: -2px -2px var(--neon-red); }
+  100% { text-shadow: 2px 2px var(--neon-red); }
+}

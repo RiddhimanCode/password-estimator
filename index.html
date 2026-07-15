@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DECRYPTOR // PASSWORD SECURITY AUDIT HUD</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Import Fira Code from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- CRT Screen Overlay Effect -->
+  <div class="crt-overlay"></div>
+  <div class="scanlines"></div>
+
+  <!-- Big Red Alarm for Blacklisted/Leaked Passwords -->
+  <div id="leak-alarm" class="leak-alarm-overlay hidden">
+    <div class="alarm-banner">
+      <div class="alarm-glitch" data-text="ACCESS DENIED / LEAK DETECTED">ACCESS DENIED / LEAK DETECTED</div>
+      <pre class="alarm-ascii">
+██╗      ███████╗ █████╗ ██╗  ██╗    ██████╗  ███████╗███╗   ██╗██╗███████╗██████╗ 
+██║      ██╔════╝██╔══██╗██║ ██╔╝    ██╔══██╗ ██╔════╝████╗  ██║██║██╔════╝██╔══██╗
+██║      █████╗  ███████║█████╔╝     ██║  ██║ █████╗  ██╔██╗ ██║██║█████╗  ██║  ██║
+██║      ██╔══╝  ██╔══██║██╔═██╗     ██║  ██║ ██╔══╝  ██║╚██╗██║██║██╔══╝  ██║  ██║
+███████╗ ███████╗██║  ██║██║  ██╗    ██████╔╝ ███████╗██║ ╚████║██║███████╗██████╔╝
+╚══════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝    ╚═════╝  ╚══════╝╚═╝  ╚═══╝╚═╝╚══════╝╚═════╝ 
+      </pre>
+      <div class="alarm-details">
+        <p class="blink-fast">&gt;&gt; WARNING: PASSWORD IDENTIFIED IN PUBLIC DISCLOSURE ARCHIVES &lt;&lt;</p>
+        <p>&gt;&gt; EST. LEAK INCIDENTS: 10,000+ COMPROMISED DATABASES &lt;&lt;</p>
+        <p>&gt;&gt; IMMEDIATE ACTION REQUIRED: ROTATE KEY OR INCREASE ENTROPY &lt;&lt;</p>
+      </div>
+      <div class="alarm-footer">PRESS ANY KEY TO ABORT SYSTEM AUDIT</div>
+    </div>
+  </div>
+
+  <div class="hud-wrapper">
+    <!-- Top HUD Navigation Bar -->
+    <header class="hud-header">
+      <div class="header-left">
+        <span class="system-title">SECURE_CORE // AUDIT_OS v3.45</span>
+        <span class="status-indicator online"><span class="pulse-dot"></span> LINK_OK</span>
+      </div>
+      <div class="header-right">
+        <span class="system-stat">SYS_TEMP: <span class="green-text">38°C</span></span>
+        <span class="system-stat">MEM_LOAD: <span class="green-text">14.2%</span></span>
+        <span class="system-stat">TIME: <span id="hud-clock">00:00:00</span></span>
+      </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="hud-main">
+      <!-- Left Panel: Terminal Input & Console -->
+      <section class="panel-left">
+        <div class="terminal-wrapper">
+          <div class="terminal-container">
+            <div class="panel-header">
+              <span class="panel-tag">&gt;_ TERMINAL_INPUT</span>
+              <div class="panel-decor"></div>
+            </div>
+            
+            <div class="console-box">
+              <p class="console-welcome">SECURE KEY DECRYPTOR AND COMPLEXITY ESTIMATOR V3.45</p>
+              <p class="console-meta">INITIALIZING ENTROPY ASSESSMENT SEQUENCE...</p>
+              <p class="console-meta">[SUCCESS] DATABASE LOADED: 10,000 BLACKLISTED HASHES CACHED</p>
+              
+              <div class="input-prompt">
+                <span class="prompt-arrow">SYS_KEY_INPUT &gt;</span>
+                <div class="input-field-container">
+                  <input type="password" id="password-input" autocomplete="off" placeholder="type key..." spellcheck="false">
+                  <button id="toggle-visible-btn" class="hud-btn" title="Toggle Decryption Visualizer">DECRYPT_VISUAL</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="terminal-wrapper margin-top">
+          <div class="terminal-container font-small">
+            <div class="panel-header">
+              <span class="panel-tag">&gt;_ CONSOLE_ALERTS</span>
+              <div class="panel-decor"></div>
+            </div>
+            <!-- Dynamic terminal logs feed -->
+            <div id="console-logs" class="logs-container">
+              <div class="log-line system-log">[SYSTEM] Ready. Enter a password to begin entropy analysis.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Visual HUD Gauges -->
+      <section class="panel-right">
+        <div class="terminal-wrapper height-100">
+          <div class="terminal-container height-100 flex-column">
+            <div class="panel-header">
+              <span class="panel-tag">// DIAGNOSTICS</span>
+              <div class="panel-decor"></div>
+            </div>
+
+            <!-- Score Visualizer Gauge -->
+            <div class="diag-section">
+              <div class="diag-label">ENTROPY LEVEL</div>
+              <div class="strength-gauge-container">
+                <div id="strength-label" class="strength-text font-large">NO_INPUT</div>
+                <div class="bars-wrapper" id="strength-bars">
+                  <div class="bar-segment" data-index="1"></div>
+                  <div class="bar-segment" data-index="2"></div>
+                  <div class="bar-segment" data-index="3"></div>
+                  <div class="bar-segment" data-index="4"></div>
+                  <div class="bar-segment" data-index="5"></div>
+                </div>
+                <div class="score-numerical" id="score-text">SCORE: 0 / 5</div>
+              </div>
+            </div>
+
+            <!-- Rules Audit Checklist -->
+            <div class="diag-section flex-grow">
+              <div class="diag-label">COMPLEXITY CRITERIA</div>
+              <ul class="audit-list">
+                <li id="rule-length" class="audit-item status-fail">
+                  <span class="item-icon">[FAIL]</span>
+                  <span class="item-text">01. MINIMUM 8 CHARACTERS</span>
+                </li>
+                <li id="rule-upper" class="audit-item status-fail">
+                  <span class="item-icon">[FAIL]</span>
+                  <span class="item-text">02. UPPERCASE CHARACTER [A-Z]</span>
+                </li>
+                <li id="rule-lower" class="audit-item status-fail">
+                  <span class="item-icon">[FAIL]</span>
+                  <span class="item-text">03. LOWERCASE CHARACTER [a-z]</span>
+                </li>
+                <li id="rule-number" class="audit-item status-fail">
+                  <span class="item-icon">[FAIL]</span>
+                  <span class="item-text">04. NUMERIC DIGIT [0-9]</span>
+                </li>
+                <li id="rule-symbol" class="audit-item status-fail">
+                  <span class="item-icon">[FAIL]</span>
+                  <span class="item-text">05. SPECIAL SYMBOL [!@#$... ]</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Matrix style decoration -->
+            <div class="decor-matrix">
+              <div class="matrix-column">01010101</div>
+              <div class="matrix-column">10011100</div>
+              <div class="matrix-column">11001010</div>
+              <div class="matrix-column">00110011</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer Stats -->
+    <footer class="hud-footer">
+      <div class="footer-segment">STATUS: <span class="green-text" id="footer-status">MONITORING</span></div>
+      <div class="footer-segment flex-grow text-center">SYSTEM AUDIT CONSOLE // ALL KEYWORDS ENCRYPTED LOCALHOST</div>
+      <div class="footer-segment">SECURE PORT: <span class="green-text">3000</span></div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
