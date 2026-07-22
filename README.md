@@ -20,22 +20,6 @@ CyberShield is a lightweight, responsive, full-stack web application designed wi
 
 ---
 
-## 💻 Local Installation & Setup
+## Website Link
 
-To run this application locally on your machine, follow these steps:
-
-1. **Clone the repository**
-git clone [https://github.com/RiddhimanCode/password-estimator.git](https://github.com/RiddhimanCode/password-estimator.git]
- 
-2. **Navigate into project directory**
-cd password-estimator
-
-3.**Install the required dependencies**
-npm install
-
-3.**Start the local Node.js development server**
-node server.js
-
-4.**Interact with the application**
-Open your preferred web browser and navigate to:
-http://localhost:3000
+https://password-estimator.onrender.com/
